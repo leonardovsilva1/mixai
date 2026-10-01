@@ -1,0 +1,31 @@
+.preview-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.secondary-button,
+.track-actions button {
+  border: 1px solid #3a4138;
+  background: #20251f;
+  color: #cbd2c7;
+  border-radius: 6px;
+  cursor: pointer;
+  font: 600 11px 'DM Sans', sans-serif;
+}
+
+.secondary-button { padding: 10px 14px; }
+.track-actions { display: flex; gap: 6px; }
+.track-actions button { padding: 7px 8px; }
+.secondary-button:hover,
+.track-actions button:hover { border-color: #1ed760; color: #f4f5ef; }
+.secondary-button:disabled,
+.track-actions button:disabled { opacity: .4; cursor: default; }
+
+@media (max-width: 650px) {
+  .preview-footer { flex-direction: column; }
+  .preview-footer .create-button { width: 100%; }
+  .track-actions { flex-direction: column; }
+  .track-actions button { padding: 5px 7px; }
+}

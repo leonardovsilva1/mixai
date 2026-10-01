@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10110f">
+  <meta name="description" content="Transforme seu mood em uma playlist feita para você com MixAI.">
+  <title>MixAI — sua música, seu mood</title>
+  <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='preview.css') }}">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="MixAI início">
+      <img src="{{ url_for('static', filename='logo.svg') }}" alt="MixAI" width="142" height="38">
+    </a>
+    <div class="topbar-right"><span class="privacy-dot"></span><span>Feito para o seu Spotify</span><span class="topbar-divider"></span><span class="beta">BETA</span></div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero" aria-labelledby="headline">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> PLAYLISTS COM PERSONALIDADE</div>
+        <h1 id="headline">O que você<br>quer <span>sentir?</span></h1>
+        <p class="hero-text">Descreva a energia. A MixAI encontra as músicas e monta uma playlist no seu Spotify.</p>
+        <div class="hero-footnote"><span class="sparkle">✳</span> Sua próxima obsessão começa com uma frase.</div>
+      </div>
+
+      <section class="composer-card" aria-label="Criar playlist">
+        <div class="card-topline"><span class="step-label"><span class="step-number">01</span> SEU MOOD</span><span class="live-indicator"><i></i> PRONTO PRA OUVIR</span></div>
+        <form id="playlist-form">
+          <label class="sr-only" for="mood">Descreva o mood da playlist</label>
+          <div class="mood-input-wrap">
+            <textarea id="mood" name="mood" maxlength="300" rows="4" placeholder="Ex.: um rolê de carro à noite, cidade vazia, cabeça cheia…" required></textarea>
+            <div class="input-bottom"><span class="input-hint"><span class="return-icon">↵</span> Seja específico. Ou deixe a imaginação solta.</span><span id="char-count">0 / 300</span></div>
+          </div>
+          <div class="suggestion-label">PRECISA DE UM COMEÇO?</div>
+          <div class="prompt-chips">
+            <button class="chip" type="button" data-prompt="Moshpit brasileiro, trap hard, 808 distorcido e energia de show">⚡ <span>Trap hard</span></button>
+            <button class="chip" type="button" data-prompt="Trilhas emocionantes e marcantes dos filmes de Christopher Nolan">◒ <span>Cinema épico</span></button>
+            <button class="chip" type="button" data-prompt="R&B alternativo para uma madrugada introspectiva e chuvosa">☾ <span>Madrugada</span></button>
+          </div>
+          <div class="form-footer">
+            <label class="size-control" for="tamanho"><span>FAIXAS</span><select id="tamanho" name="tamanho"><option value="10">10</option><option value="15">15</option><option value="20" selected>20</option><option value="30">30</option><option value="40">40</option></select><span class="select-chevron">⌄</span></label>
+            <button class="create-button" id="create-button" type="submit"><span class="button-label">Ver prévia da playlist</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+          </div>
+        </form>
+        <div class="card-bottom"><span class="spotify-mark" aria-hidden="true">◉</span> Conecta com sua conta Spotify <span class="bottom-lock">⌑</span> Playlist privada</div>
+      </section>
+    </section>
+
+    <section class="result-panel" id="preview-panel" aria-live="polite" hidden>
+      <div class="result-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> SUA SELEÇÃO</div><h2 id="preview-title">Confira antes de salvar</h2><p id="preview-caption"></p></div></div>
+      <ol class="track-list" id="preview-list"></ol>
+      <div class="preview-footer"><button class="secondary-button" id="add-track" type="button">Adicionar alternativa</button><button class="create-button" id="confirm-button" type="button">Criar playlist no Spotify <span aria-hidden="true">↗</span></button></div>
+    </section>
+
+    <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+      <div class="result-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> SUA MIX ESTÁ PRONTA</div><h2 id="result-title">Feita para esse momento.</h2><p id="result-caption"></p></div><a id="spotify-link" class="spotify-open" target="_blank" rel="noopener noreferrer">Abrir no Spotify <span>↗</span></a></div>
+      <ol class="track-list" id="track-list"></ol>
+    </section>
+
+    <section class="how-it-works" aria-label="Como funciona">
+      <div class="how-title"><span class="how-icon">✳</span><span>DO MOOD AO PLAY<br><small>SEM PULAR ETAPAS</small></span></div>
+      <div class="how-step"><span class="how-index">01</span><div><strong>Você descreve</strong><p>Uma sensação, uma cena, uma memória.</p></div></div>
+      <span class="how-connector" aria-hidden="true">······→</span>
+      <div class="how-step"><span class="how-index">02</span><div><strong>A MixAI garimpa</strong><p>Gemini sugere. Spotify confirma.</p></div></div>
+      <span class="how-connector" aria-hidden="true">······→</span>
+      <div class="how-step"><span class="how-index">03</span><div><strong>Você dá o play</strong><p>Sua playlist, direto na sua conta.</p></div></div>
+    </section>
+
+    <footer class="footer"><span>© 2026 MixAI</span><span>Música que entende o momento.</span><a href="https://www.spotify.com/" target="_blank" rel="noopener noreferrer">Powered by Spotify</a></footer>
+  </main>
+
+  <div class="loading-overlay" id="loading" hidden>
+    <div class="loading-card"><div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><p class="loading-kicker">MIXAI ESTÁ OUVINDO</p><h2 id="loading-title">Sintonizando seu mood…</h2><p class="loading-caption">Procurando faixas que combinam com o que você descreveu.</p><div class="loading-track"><span></span></div><button id="cancel-button" type="button">Cancelar</button></div>
+  </div>
+  <div class="toast" id="toast" role="alert" hidden></div>
+  <script>
+    const form = document.querySelector('#playlist-form');
+    const mood = document.querySelector('#mood');
+    const counter = document.querySelector('#char-count');
+    const loading = document.querySelector('#loading');
+    const button = document.querySelector('#create-button');
+    const previewPanel = document.querySelector('#preview-panel');
+    const previewList = document.querySelector('#preview-list');
+    const confirmButton = document.querySelector('#confirm-button');
+    const addButton = document.querySelector('#add-track');
+    const cancelButton = document.querySelector('#cancel-button');
+    let requestController;
+    let previa = null;
+    function mostrarErro(mensagem) {
+      const toast = document.querySelector('#toast');
+      toast.textContent = mensagem; toast.hidden = false;
+      setTimeout(() => toast.hidden = true, 7000);
+    }
+    function renderizarPrevia() {
+      previewList.replaceChildren();
+      previa.selecionadas.forEach((faixa, indice) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span class="track-number">${String(indice + 1).padStart(2, '0')}</span><span class="track-glyph">♫</span><span class="track-meta"><strong></strong><small></small></span><span class="track-actions"><button type="button" data-acao="trocar">Trocar</button><button type="button" data-acao="remover">Remover</button></span>`;
+        item.querySelector('strong').textContent = faixa.titulo;
+        item.querySelector('small').textContent = faixa.artista;
+        item.querySelector('[data-acao="trocar"]').disabled = previa.alternativas.length === 0;
+        item.querySelectorAll('button').forEach(botao => { botao.dataset.indice = indice; });
+        previewList.appendChild(item);
+      });
+      document.querySelector('#preview-caption').textContent = `${previa.selecionadas.length} de ${previa.tamanho} faixas escolhidas · ${previa.alternativas.length} alternativas para troca.`;
+      addButton.disabled = previa.selecionadas.length >= previa.tamanho || previa.alternativas.length === 0;
+      confirmButton.disabled = previa.selecionadas.length === 0;
+    }
+    mood.addEventListener('input', () => { counter.textContent = `${mood.value.length} / 300`; });
+    document.querySelectorAll('.chip').forEach(chip => chip.addEventListener('click', () => {
+      mood.value = chip.dataset.prompt; mood.dispatchEvent(new Event('input')); mood.focus();
+    }));
+    cancelButton.addEventListener('click', () => {
+      if (requestController) requestController.abort();
+      loading.hidden = true; button.disabled = false;
+    });
+    previewList.addEventListener('click', evento => {
+      const acao = evento.target.closest('button[data-acao]');
+      if (!acao || !previa) return;
+      const indice = Number(acao.dataset.indice);
+      const antiga = previa.selecionadas[indice];
+      if (acao.dataset.acao === 'trocar' && previa.alternativas.length) {
+        previa.selecionadas[indice] = previa.alternativas.shift();
+        previa.alternativas.push(antiga);
+      } else if (acao.dataset.acao === 'remover') {
+        previa.selecionadas.splice(indice, 1);
+        previa.alternativas.push(antiga);
+      }
+      renderizarPrevia();
+    });
+    addButton.addEventListener('click', () => {
+      if (!previa || !previa.alternativas.length || previa.selecionadas.length >= previa.tamanho) return;
+      previa.selecionadas.push(previa.alternativas.shift());
+      renderizarPrevia();
+    });
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const texto = mood.value.trim();
+      if (!texto) { mood.focus(); return; }
+      requestController = new AbortController();
+      button.disabled = true; loading.hidden = false; cancelButton.hidden = false;
+      document.querySelector('#loading-title').textContent = 'Escolhendo as faixas…';
+      previewPanel.hidden = true;
+      document.querySelector('#result-panel').hidden = true;
+      try {
+        const resposta = await fetch('/api/previews', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({mood: texto, tamanho: Number(document.querySelector('#tamanho').value)}),
+          signal: requestController.signal
+        });
+        const dados = await resposta.json();
+        if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível montar a prévia.');
+        previa = {id: dados.previa, selecionadas: dados.musicas, alternativas: dados.alternativas, tamanho: dados.quantidade_pedida};
+        document.querySelector('#preview-title').textContent = texto;
+        renderizarPrevia();
+        previewPanel.hidden = false;
+        previewPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
+      } catch (erro) {
+        if (erro.name !== 'AbortError') mostrarErro(erro.message);
+      } finally { loading.hidden = true; button.disabled = false; requestController = null; }
+    });
+    confirmButton.addEventListener('click', async () => {
+      if (!previa || !previa.selecionadas.length) return;
+      confirmButton.disabled = true; loading.hidden = false; cancelButton.hidden = true;
+      document.querySelector('#loading-title').textContent = 'Criando sua playlist…';
+      try {
+        const resposta = await fetch('/api/playlists', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({previa: previa.id, faixas: previa.selecionadas.map(faixa => faixa.id)})
+        });
+        const dados = await resposta.json();
+        if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível criar a playlist.');
+        document.querySelector('#result-title').textContent = dados.nome;
+        document.querySelector('#result-caption').textContent = `${dados.quantidade} faixas selecionadas para o seu momento.`;
+        const link = document.querySelector('#spotify-link'); link.href = dados.link;
+        document.querySelector('#track-list').innerHTML = '';
+        dados.musicas.forEach((faixa, i) => {
+          const item = document.createElement('li');
+          item.innerHTML = `<span class="track-number">${String(i + 1).padStart(2, '0')}</span><span class="track-glyph">♫</span><span class="track-meta"><strong></strong><small></small></span><span class="track-check">✓</span>`;
+          item.querySelector('strong').textContent = faixa.titulo;
+          item.querySelector('small').textContent = faixa.artista;
+          document.querySelector('#track-list').appendChild(item);
+        });
+        previa = null;
+        previewPanel.hidden = true;
+        document.querySelector('#result-panel').hidden = false;
+        document.querySelector('#result-panel').scrollIntoView({behavior: 'smooth', block: 'start'});
+      } catch (erro) {
+        mostrarErro(`${erro.message} Confira seu Spotify antes de gerar outra prévia.`);
+        previa = null;
+        previewPanel.hidden = true;
+      } finally { loading.hidden = true; }
+    });
+  </script>
+</body>
+</html>
