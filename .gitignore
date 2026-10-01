@@ -9,4 +9,5 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.pytest_tmp_mixai_run*/
+.pytest_tmp_mixai_*/
+_spotify_check.py
